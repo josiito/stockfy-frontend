@@ -1,0 +1,114 @@
+@import "tailwindcss";
+
+/*
+ * Paleta Stockfy: verde (marca), naranja (acción) y azul (información).
+ * Los tokens se redefinen en modo oscuro; los componentes solo usan
+ * las utilidades generadas (bg-brand, text-ink, etc.).
+ */
+:root {
+  --background: #f7f8f3;
+  --surface: #ffffff;
+  --surface-muted: #eef2ea;
+  --ink: #102a2c;
+  --ink-muted: #51666a;
+  --line: #dde4da;
+
+  --brand: #11795a;
+  --brand-strong: #0b5c44;
+  --brand-soft: #dcf2e6;
+
+  --accent: #f26b1d;
+  --accent-strong: #d4550c;
+  --accent-soft: #ffe7d6;
+
+  --info: #2563c9;
+  --info-strong: #1b4a99;
+  --info-soft: #dde9fb;
+
+  --danger: #c23b3b;
+
+  /* Rellenos con texto blanco encima: iguales en claro y oscuro. */
+  --brand-fill: #11795a;
+  --accent-fill: #e2600f;
+  --info-fill: #2563c9;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0b1517;
+    --surface: #122023;
+    --surface-muted: #182b2e;
+    --ink: #e8f1ec;
+    --ink-muted: #9db3ad;
+    --line: #24393b;
+
+    --brand: #3cc48f;
+    --brand-strong: #6edcae;
+    --brand-soft: #143a2e;
+
+    --accent: #ff8a45;
+    --accent-strong: #ffa36b;
+    --accent-soft: #3d2416;
+
+    --info: #6c9ef0;
+    --info-strong: #94b8f5;
+    --info-soft: #172b4a;
+
+    --danger: #f07070;
+  }
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-surface-muted: var(--surface-muted);
+  --color-ink: var(--ink);
+  --color-ink-muted: var(--ink-muted);
+  --color-line: var(--line);
+  --color-brand: var(--brand);
+  --color-brand-strong: var(--brand-strong);
+  --color-brand-soft: var(--brand-soft);
+  --color-accent: var(--accent);
+  --color-accent-strong: var(--accent-strong);
+  --color-accent-soft: var(--accent-soft);
+  --color-info: var(--info);
+  --color-info-strong: var(--info-strong);
+  --color-info-soft: var(--info-soft);
+  --color-danger: var(--danger);
+  --color-brand-fill: var(--brand-fill);
+  --color-accent-fill: var(--accent-fill);
+  --color-info-fill: var(--info-fill);
+
+  --font-sans: var(--ff-body);
+  --font-display: var(--ff-display);
+}
+
+body {
+  background: var(--background);
+  color: var(--ink);
+}
+
+@utility btn {
+  @apply inline-flex items-center justify-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold transition-colors disabled:cursor-not-allowed disabled:opacity-50;
+}
+@utility btn-primary {
+  @apply btn bg-brand-fill text-white hover:brightness-110;
+}
+@utility btn-accent {
+  @apply btn bg-accent-fill text-white hover:brightness-110;
+}
+@utility btn-ghost {
+  @apply btn border border-line bg-surface text-ink hover:border-brand hover:text-brand;
+}
+@utility input {
+  @apply w-full rounded-xl border border-line bg-surface px-4 py-2.5 text-sm text-ink outline-none transition placeholder:text-ink-muted/70 focus:border-brand focus:ring-4 focus:ring-brand/15;
+}
+@utility label {
+  @apply mb-1.5 block text-sm font-medium text-ink;
+}
+@utility card {
+  @apply rounded-3xl border border-line bg-surface;
+}
+@utility container-page {
+  @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8;
+}
