@@ -20,7 +20,7 @@ export function CheckoutForm({ defaults }: Props) {
   if (!items.length) {
     return (
       <div className="card p-10 text-center">
-        <p className="font-display text-xl font-semibold">No hay nada que pedir todavía</p>
+        <p className="font-display text-xl font-medium">No hay nada que pedir todavía</p>
         <Link href="/productos" className="btn-primary mt-6">Ir al catálogo</Link>
       </div>
     );
@@ -33,7 +33,7 @@ export function CheckoutForm({ defaults }: Props) {
       <input type="hidden" name="items" value={payload} />
 
       <section className="card space-y-5 p-6 sm:p-8">
-        <h2 className="font-display text-xl font-semibold">Datos de envío</h2>
+        <h2 className="font-display text-xl font-medium">Datos de envío</h2>
         <Field name="shipping_name" label="Nombre completo" defaultValue={defaults.name} required autoComplete="name" />
         <Field name="shipping_address" label="Dirección" required autoComplete="street-address" />
         <div className="grid gap-5 sm:grid-cols-2">
@@ -50,7 +50,7 @@ export function CheckoutForm({ defaults }: Props) {
       </section>
 
       <aside className="card h-fit space-y-4 p-6 lg:sticky lg:top-24">
-        <h2 className="font-display text-xl font-semibold">Tu pedido</h2>
+        <h2 className="font-display text-xl font-medium">Tu pedido</h2>
         <ul className="space-y-3 text-sm">
           {items.map((item) => (
             <li key={item.variantId} className="flex justify-between gap-4">
@@ -64,7 +64,7 @@ export function CheckoutForm({ defaults }: Props) {
         </ul>
         <div className="flex justify-between border-t border-line pt-4">
           <span className="font-semibold">Subtotal</span>
-          <span className="font-display text-xl font-bold">{formatPrice(subtotal)}</span>
+          <span className="font-display text-xl font-medium">{formatPrice(subtotal)}</span>
         </div>
         <p className="text-xs text-ink-muted">Los gastos de envío se añaden al confirmar el pedido.</p>
         <FormError message={state?.error} />

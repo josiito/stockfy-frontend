@@ -4,8 +4,10 @@ import Link from "next/link";
 import { Suspense } from "react";
 
 import { ApiUnavailable } from "@/components/api-error";
+import { FiltersToggle } from "@/components/filters-toggle";
 import { ProductCard, ProductCardSkeleton } from "@/components/product-card";
 import { getCategories, getProducts, type ProductQuery } from "@/lib/api";
+import { paramsKey } from "@/lib/search-params";
 
 export const metadata: Metadata = { title: "Catálogo" };
 
@@ -51,57 +53,60 @@ async function Filters({ searchParams }: { searchParams: Promise<SearchParams> }
   const params = await searchParams;
   const query = toQuery(params);
   const categories = await getCategories().catch(() => null);
+  const active = [query.search, query.category, query.price_min, query.price_max, query.available].filter(Boolean).length;
 
   return (
-    <form action="/productos" className="card space-y-5 p-5 lg:sticky lg:top-24">
-      <div className="flex items-center gap-2 font-semibold">
-        <SlidersHorizontal className="size-4 text-brand" /> Filtros
-      </div>
-
-      <div className="relative">
-        <Search className="pointer-events-none absolute left-3.5 top-1/2 size-4 -translate-y-1/2 text-ink-muted" />
-        <input name="search" defaultValue={query.search} placeholder="Buscar…" className="input pl-10" />
-      </div>
-
-      <div>
-        <label className="label" htmlFor="category">Categoría</label>
-        <select id="category" name="category" defaultValue={query.category ?? ""} className="input">
-          <option value="">Todas</option>
-          {categories?.results.map((c) => (
-            <option key={c.id} value={c.slug}>{c.name}</option>
-          ))}
-        </select>
-      </div>
-
-      <div>
-        <span className="label">Precio (€)</span>
-        <div className="grid grid-cols-2 gap-2">
-          <input name="price_min" type="number" min={0} defaultValue={query.price_min} placeholder="Mín." className="input" />
-          <input name="price_max" type="number" min={0} defaultValue={query.price_max} placeholder="Máx." className="input" />
+    <FiltersToggle active={active}>
+      <form key={paramsKey(params)} action="/productos" className="card space-y-5 p-5 lg:sticky lg:top-32">
+        <div className="flex items-center gap-2 text-sm font-semibold uppercase tracking-[0.14em]">
+          <SlidersHorizontal className="size-4" /> Filtros
         </div>
-      </div>
 
-      <div>
-        <label className="label" htmlFor="ordering">Ordenar por</label>
-        <select id="ordering" name="ordering" defaultValue={query.ordering ?? "-created_at"} className="input">
-          {ORDERINGS.map((o) => (
-            <option key={o.value} value={o.value}>{o.label}</option>
-          ))}
-        </select>
-      </div>
+        <div className="relative">
+          <Search className="pointer-events-none absolute left-3.5 top-1/2 size-4 -translate-y-1/2 text-ink-muted" />
+          <input name="search" defaultValue={query.search} placeholder="Buscar…" className="input pl-10" />
+        </div>
 
-      <label className="flex items-center gap-2.5 text-sm">
-        <input type="checkbox" name="available" value="true" defaultChecked={query.available} className="size-4 accent-[var(--brand)]" />
-        Solo con stock
-      </label>
-      {query.featured && <input type="hidden" name="featured" value="true" />}
+        <div>
+          <label className="label" htmlFor="category">Categoría</label>
+          <select id="category" name="category" defaultValue={query.category ?? ""} className="input">
+            <option value="">Todas</option>
+            {categories?.results.map((c) => (
+              <option key={c.id} value={c.slug}>{c.name}</option>
+            ))}
+          </select>
+        </div>
 
-      <div className="flex gap-2">
-        <button className="btn-primary flex-1">Aplicar</button>
-        <Link href="/productos" className="btn-ghost">Limpiar</Link>
-      </div>
-    </form>
-  );
+        <div>
+          <span className="label">Precio (€)</span>
+          <div className="grid grid-cols-2 gap-2">
+            <input name="price_min" type="number" min={0} defaultValue={query.price_min} placeholder="Mín." className="input" />
+            <input name="price_max" type="number" min={0} defaultValue={query.price_max} placeholder="Máx." className="input" />
+          </div>
+        </div>
+
+        <div>
+          <label className="label" htmlFor="ordering">Ordenar por</label>
+          <select id="ordering" name="ordering" defaultValue={query.ordering ?? "-created_at"} className="input">
+            {ORDERINGS.map((o) => (
+              <option key={o.value} value={o.value}>{o.label}</option>
+            ))}
+          </select>
+        </div>
+
+        <label className="flex items-center gap-2.5 text-sm">
+          <input type="checkbox" name="available" value="true" defaultChecked={query.available} className="size-4 accent-[var(--brand)]" />
+          Solo con stock
+        </label>
+        {query.featured && <input type="hidden" name="featured" value="true" />}
+
+        <div className="flex gap-2">
+          <button className="btn-primary flex-1">Aplicar</button>
+          <Link href="/productos" className="btn-ghost">Limpiar</Link>
+        </div>
+      </form>
+    </FiltersToggle>
+);
 }
 
 async function Results({ searchParams }: { searchParams: Promise<SearchParams> }) {
@@ -126,14 +131,14 @@ async function Results({ searchParams }: { searchParams: Promise<SearchParams> }
       </p>
 
       {data.results.length ? (
-        <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
+        <div className="grid grid-cols-2 gap-x-4 gap-y-10 sm:gap-x-6 xl:grid-cols-3">
           {data.results.map((p) => (
             <ProductCard key={p.id} product={p} />
           ))}
         </div>
       ) : (
         <div className="card p-12 text-center">
-          <p className="font-display text-xl font-semibold">No hay productos con estos filtros</p>
+          <p className="font-display text-xl font-medium">No hay productos con estos filtros</p>
           <Link href="/productos" className="btn-ghost mt-6">Ver todo el catálogo</Link>
         </div>
       )}
@@ -162,9 +167,12 @@ async function Results({ searchParams }: { searchParams: Promise<SearchParams> }
 export default function ProductsPage(props: PageProps<"/productos">) {
   return (
     <div className="container-page pt-12">
-      <header className="mb-10">
-        <p className="text-sm font-semibold uppercase tracking-wider text-accent">Tienda</p>
-        <h1 className="mt-1 font-display text-4xl font-bold tracking-tight sm:text-5xl">Catálogo</h1>
+      <header className="mb-10 border-b border-line pb-8">
+        <p className="eyebrow">Tienda</p>
+        <h1 className="mt-3 font-display text-4xl tracking-tight sm:text-5xl">Catálogo</h1>
+        <p className="mt-3 max-w-xl text-ink-muted">
+          Todas nuestras piezas, fabricadas a mano. Filtra por categoría, precio o disponibilidad.
+        </p>
       </header>
       <div className="grid gap-8 lg:grid-cols-[280px_1fr]">
         <aside>
@@ -174,7 +182,7 @@ export default function ProductsPage(props: PageProps<"/productos">) {
         </aside>
         <Suspense
           fallback={
-            <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
+            <div className="grid grid-cols-2 gap-x-4 gap-y-10 sm:gap-x-6 xl:grid-cols-3">
               {Array.from({ length: 6 }, (_, i) => (
                 <ProductCardSkeleton key={i} />
               ))}

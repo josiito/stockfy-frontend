@@ -61,7 +61,7 @@ async function Favorites({ searchParams }: { searchParams: Promise<Record<string
                   <Heart className="size-5 fill-current" />
                 </span>
                 <div className="flex-1">
-                  <Link href={`/productos/${item.product.slug}`} className="font-display text-lg font-semibold hover:text-brand">
+                  <Link href={`/productos/${item.product.slug}`} className="font-display text-lg font-medium hover:text-brand">
                     {item.product.name}
                   </Link>
                   {item.product.short_description && (
@@ -77,7 +77,7 @@ async function Favorites({ searchParams }: { searchParams: Promise<Record<string
             <span className="grid size-14 place-items-center rounded-full bg-accent-soft text-accent">
               <Heart className="size-6" />
             </span>
-            <p className="mt-5 font-display text-xl font-semibold">Esta lista está vacía</p>
+            <p className="mt-5 font-display text-xl font-medium">Esta lista está vacía</p>
             <p className="mt-1 text-sm text-ink-muted">Pulsa el corazón en cualquier producto y elige esta lista.</p>
             <Link href="/productos" className="btn-primary mt-6">Explorar catálogo</Link>
           </div>
@@ -90,7 +90,7 @@ async function Favorites({ searchParams }: { searchParams: Promise<Record<string
 export default function WishlistPage(props: PageProps<"/cuenta/favoritos">) {
   return (
     <div>
-      <h1 className="mb-6 font-display text-3xl font-bold">Favoritos</h1>
+      <h1 className="mb-6 font-display text-3xl font-medium">Favoritos</h1>
       <Suspense fallback={<div className="card h-48 animate-pulse" />}>
         <Favorites searchParams={props.searchParams} />
       </Suspense>

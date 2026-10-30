@@ -27,6 +27,23 @@ El despliegue completo (PostgreSQL, backend, esta tienda y Caddy con HTTPS) est�
 - Las mutaciones (login, registro, pedidos, pago, favoritos) son Server Actions en `src/app/actions/`.
 - El carrito vive en el navegador (`localStorage`). Al confirmar se crea el pedido con `POST /api/orders/` y después se inicia el pago con `POST /api/payments/checkout/`.
 
+## Panel de gestión (`/panel`)
+
+Solo para los perfiles **ADMIN** y **EMPLEADO** del backend. Al entrar con uno de esos perfiles, el login lleva directamente al panel, y la cabecera de la tienda muestra un enlace «Panel».
+
+- **Resumen**: número de productos, variantes sin stock, productos con poco stock y últimos movimientos.
+- **Productos** (ADMIN y EMPLEADO): crear, editar y archivar productos; añadir y editar variantes con los atributos de su categoría; ajustar el stock (entradas, ventas en tienda, devoluciones, daños y correcciones; todo queda registrado como movimiento); subir imágenes (van al bucket R2 a través del backend) y elegir la principal.
+- **Usuarios** (solo ADMIN): alta de empleados y administradores, cambio de perfil, cambio de contraseña y desactivar/reactivar cuentas. Un administrador no puede quitarse su propio perfil ni desactivarse.
+
+Cómo se protege:
+
+1. `src/proxy.ts` manda a `/login` a quien entra en `/panel` sin sesión.
+2. `src/app/panel/layout.tsx` comprueba el rol: un cliente ve «Acceso restringido». `src/app/panel/usuarios/layout.tsx` hace lo mismo con los empleados.
+3. Cada Server Action del panel (`src/app/panel/actions/`) vuelve a comprobar el rol.
+4. La protección real está en el backend: `/api/admin/...` responde 403 si el rol no tiene permiso.
+
+La tienda vive en el grupo de rutas `src/app/(tienda)/`, con su cabecera y su pie. El panel tiene su propio layout. Las URLs no cambian.
+
 ## Pagos
 
 `/cuenta/pedidos/[number]` inicia el pago según lo que devuelva la pasarela activa del backend:

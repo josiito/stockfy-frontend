@@ -140,3 +140,105 @@ export type Wishlist = {
   items: WishlistItem[];
   created_at: string;
 };
+
+// --- Panel de gestión (/api/admin/...) --------------------------------------
+
+export type ProductStatus = "DRAFT" | "ACTIVE" | "HIDDEN" | "ARCHIVED";
+export type VariantStatus = "ACTIVE" | "HIDDEN" | "DISCONTINUED";
+
+export type AdminProduct = {
+  id: number;
+  name: string;
+  slug: string;
+  short_description: string;
+  description: string;
+  category: number;
+  category_name: string;
+  status: ProductStatus;
+  featured: boolean;
+  variants_count: number;
+  total_stock: number;
+  primary_image_url: string | null;
+  created_at: string;
+  updated_at: string;
+};
+
+export type AdminCategory = {
+  id: number;
+  name: string;
+  slug: string;
+  description: string;
+  parent: number | null;
+  is_active: boolean;
+};
+
+/** GET /api/categories/{slug}/attributes/ */
+export type CategoryAttribute = {
+  id: number;
+  name: string;
+  slug: string;
+  required: boolean;
+  filterable: boolean;
+  position: number;
+  values: { id: number; value: string; slug: string }[];
+};
+
+export type AdminVariant = {
+  id: number;
+  product: number;
+  product_name: string;
+  sku: string;
+  price: string;
+  compare_at_price: string | null;
+  stock: number;
+  status: VariantStatus;
+  /** Ids de AttributeValue. */
+  attributes: number[];
+  created_at: string;
+  updated_at: string;
+};
+
+export type AdminImage = {
+  id: number;
+  product: number;
+  variant: number | null;
+  url: string;
+  storage_key: string | null;
+  alt_text: string;
+  position: number;
+  is_primary: boolean;
+};
+
+export type MovementType =
+  | "STOCK_IN"
+  | "SALE_STORE"
+  | "SALE_ONLINE"
+  | "RETURN"
+  | "DAMAGED"
+  | "CORRECTION";
+
+export type InventoryMovement = {
+  id: number;
+  variant: number;
+  sku: string;
+  quantity: number;
+  movement_type: MovementType;
+  reason: string;
+  order: number | null;
+  user_email: string | null;
+  stock_after: number;
+  created_at: string;
+};
+
+export type AdminUser = {
+  id: number;
+  email: string;
+  username: string;
+  first_name: string;
+  last_name: string;
+  phone: string;
+  role: Role;
+  is_active: boolean;
+  last_login: string | null;
+  date_joined: string;
+};

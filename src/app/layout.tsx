@@ -1,9 +1,7 @@
 import type { Metadata } from "next";
-import { Bricolage_Grotesque, Geist } from "next/font/google";
+import { Fraunces, Geist } from "next/font/google";
 
 import { CartProvider } from "@/components/cart/cart-provider";
-import { SiteFooter } from "@/components/site-footer";
-import { SiteHeader } from "@/components/site-header";
 
 import "./globals.css";
 
@@ -12,9 +10,11 @@ const body = Geist({
   subsets: ["latin"],
 });
 
-const display = Bricolage_Grotesque({
+// Serif para titulares: tono artesanal y editorial.
+const display = Fraunces({
   variable: "--ff-display",
   subsets: ["latin"],
+  axes: ["opsz"],
 });
 
 export const metadata: Metadata = {
@@ -29,11 +29,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="es" className={`${body.variable} ${display.variable} h-full antialiased`}>
       <body className="flex min-h-full flex-col font-sans">
-        <CartProvider>
-          <SiteHeader />
-          <main className="flex-1">{children}</main>
-          <SiteFooter />
-        </CartProvider>
+        {/* La cabecera y el pie de la tienda están en (tienda)/layout.tsx;
+            el panel de gestión (/panel) tiene los suyos. */}
+        <CartProvider>{children}</CartProvider>
       </body>
     </html>
   );

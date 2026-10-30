@@ -1,60 +1,66 @@
 @import "tailwindcss";
 
 /*
- * Paleta Stockfy: verde (marca), naranja (acción) y azul (información).
- * Los tokens se redefinen en modo oscuro; los componentes solo usan
- * las utilidades generadas (bg-brand, text-ink, etc.).
+ * Paleta Stockfy: tonos cálidos y sobrios, inspirados en la madera y los
+ * tejidos naturales. Verde pino (marca), nogal (acento) y pizarra
+ * (información) sobre un fondo marfil. Los tokens se redefinen en modo
+ * oscuro; los componentes solo usan las utilidades generadas
+ * (bg-brand, text-ink, etc.).
  */
 :root {
-  --background: #f7f8f3;
+  --background: #f7f5f0;
   --surface: #ffffff;
-  --surface-muted: #eef2ea;
-  --ink: #102a2c;
-  --ink-muted: #51666a;
-  --line: #dde4da;
+  --surface-muted: #f0ece4;
+  --ink: #1d1c1a;
+  --ink-muted: #6b665e;
+  --line: #e4ded3;
 
-  --brand: #11795a;
-  --brand-strong: #0b5c44;
-  --brand-soft: #dcf2e6;
+  --brand: #1f3d33;
+  --brand-strong: #142a23;
+  --brand-soft: #e6ece8;
 
-  --accent: #f26b1d;
-  --accent-strong: #d4550c;
-  --accent-soft: #ffe7d6;
+  --accent: #9a5b2e;
+  --accent-strong: #7c4521;
+  --accent-soft: #f4e9de;
 
-  --info: #2563c9;
-  --info-strong: #1b4a99;
-  --info-soft: #dde9fb;
+  --info: #3a5573;
+  --info-strong: #2b4058;
+  --info-soft: #e5ebf2;
 
-  --danger: #c23b3b;
+  --danger: #b3372f;
 
   /* Rellenos con texto blanco encima: iguales en claro y oscuro. */
-  --brand-fill: #11795a;
-  --accent-fill: #e2600f;
-  --info-fill: #2563c9;
+  --brand-fill: #1f3d33;
+  --accent-fill: #9a5b2e;
+  --info-fill: #3a5573;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0b1517;
-    --surface: #122023;
-    --surface-muted: #182b2e;
-    --ink: #e8f1ec;
-    --ink-muted: #9db3ad;
-    --line: #24393b;
+    --background: #121110;
+    --surface: #1b1a18;
+    --surface-muted: #24221f;
+    --ink: #ece8e1;
+    --ink-muted: #a29b90;
+    --line: #302d29;
 
-    --brand: #3cc48f;
-    --brand-strong: #6edcae;
-    --brand-soft: #143a2e;
+    --brand: #9cc2ae;
+    --brand-strong: #c0dacb;
+    --brand-soft: #1e2c26;
 
-    --accent: #ff8a45;
-    --accent-strong: #ffa36b;
-    --accent-soft: #3d2416;
+    --accent: #d79d6b;
+    --accent-strong: #e8b78c;
+    --accent-soft: #33261b;
 
-    --info: #6c9ef0;
-    --info-strong: #94b8f5;
-    --info-soft: #172b4a;
+    --info: #9db4cf;
+    --info-strong: #c0d0e3;
+    --info-soft: #1d2633;
 
-    --danger: #f07070;
+    --danger: #ec8a80;
+
+    --brand-fill: #2c5546;
+    --accent-fill: #9a5b2e;
+    --info-fill: #3a5573;
   }
 }
 
@@ -81,6 +87,10 @@
 
   --font-sans: var(--ff-body);
   --font-display: var(--ff-display);
+
+  /* Esquinas contenidas: aspecto más sobrio que las tarjetas muy redondeadas. */
+  --radius-2xl: 0.625rem;
+  --radius-3xl: 0.75rem;
 }
 
 body {
@@ -88,27 +98,36 @@ body {
   color: var(--ink);
 }
 
+h1,
+h2,
+h3 {
+  text-wrap: balance;
+}
+
 @utility btn {
-  @apply inline-flex items-center justify-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold transition-colors disabled:cursor-not-allowed disabled:opacity-50;
+  @apply inline-flex items-center justify-center gap-2 rounded-md px-5 py-2.5 text-sm font-medium tracking-wide transition-colors disabled:cursor-not-allowed disabled:opacity-50;
 }
 @utility btn-primary {
-  @apply btn bg-brand-fill text-white hover:brightness-110;
+  @apply btn bg-brand-fill text-white hover:bg-brand-strong;
 }
 @utility btn-accent {
   @apply btn bg-accent-fill text-white hover:brightness-110;
 }
 @utility btn-ghost {
-  @apply btn border border-line bg-surface text-ink hover:border-brand hover:text-brand;
+  @apply btn border border-line bg-surface text-ink hover:border-ink;
 }
 @utility input {
-  @apply w-full rounded-xl border border-line bg-surface px-4 py-2.5 text-sm text-ink outline-none transition placeholder:text-ink-muted/70 focus:border-brand focus:ring-4 focus:ring-brand/15;
+  @apply w-full rounded-md border border-line bg-surface px-3.5 py-2.5 text-sm text-ink outline-none transition placeholder:text-ink-muted/70 focus:border-brand focus:ring-2 focus:ring-brand/15;
 }
 @utility label {
   @apply mb-1.5 block text-sm font-medium text-ink;
 }
 @utility card {
-  @apply rounded-3xl border border-line bg-surface;
+  @apply rounded-lg border border-line bg-surface;
 }
 @utility container-page {
   @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8;
+}
+@utility eyebrow {
+  @apply text-xs font-semibold uppercase tracking-[0.18em] text-accent;
 }

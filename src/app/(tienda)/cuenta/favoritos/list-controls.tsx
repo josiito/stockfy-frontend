@@ -90,7 +90,7 @@ export function ListHeader({ list }: { list: Wishlist }) {
             onChange={(e) => setName(e.target.value)}
             maxLength={150}
             aria-label="Nombre de la lista"
-            className="input max-w-sm font-display text-xl font-semibold"
+            className="input max-w-sm font-display text-xl font-medium"
           />
           <button aria-label="Guardar nombre" disabled={pending || !name.trim()} className="grid size-10 place-items-center rounded-xl bg-brand-fill text-white disabled:opacity-50">
             <Check className="size-4" />
@@ -110,7 +110,7 @@ export function ListHeader({ list }: { list: Wishlist }) {
         </form>
       ) : (
         <div className="flex flex-wrap items-center gap-3">
-          <h2 className="font-display text-2xl font-semibold">{list.name}</h2>
+          <h2 className="font-display text-2xl font-medium">{list.name}</h2>
           {list.is_default && (
             <span className="rounded-full bg-info-soft px-2.5 py-1 text-xs font-semibold text-info-strong">Por defecto</span>
           )}

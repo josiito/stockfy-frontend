@@ -39,11 +39,11 @@ async function ProductView({ params }: { params: Promise<{ slug: string }> }) {
       <div className="lg:py-4">
         <Link
           href={`/productos?category=${product.category.slug}`}
-          className="text-sm font-semibold uppercase tracking-wider text-info hover:underline"
+          className="eyebrow hover:underline"
         >
           {product.category.name}
         </Link>
-        <h1 className="mt-2 font-display text-4xl font-bold leading-tight tracking-tight sm:text-5xl">
+        <h1 className="mt-3 font-display text-4xl leading-tight tracking-tight sm:text-5xl">
           {product.name}
         </h1>
         {product.short_description && (
@@ -64,7 +64,7 @@ async function ProductView({ params }: { params: Promise<{ slug: string }> }) {
 
         {product.description && (
           <div className="mt-10 border-t border-line pt-8">
-            <h2 className="mb-3 font-display text-xl font-semibold">Descripción</h2>
+            <h2 className="mb-3 font-display text-xl">Descripción</h2>
             <p className="whitespace-pre-line leading-relaxed text-ink-muted">{product.description}</p>
           </div>
         )}
@@ -76,7 +76,7 @@ async function ProductView({ params }: { params: Promise<{ slug: string }> }) {
 function ProductSkeleton() {
   return (
     <div className="grid gap-10 lg:grid-cols-2 lg:gap-16">
-      <div className="aspect-square animate-pulse rounded-[2rem] bg-surface-muted" />
+      <div className="aspect-square animate-pulse rounded-lg bg-surface-muted" />
       <div className="space-y-4 py-4">
         <div className="h-4 w-24 animate-pulse rounded bg-surface-muted" />
         <div className="h-12 w-3/4 animate-pulse rounded bg-surface-muted" />

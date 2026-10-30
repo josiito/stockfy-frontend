@@ -10,6 +10,14 @@ const nextConfig: NextConfig = {
   images: {
     unoptimized: true,
   },
+  experimental: {
+    // Las imágenes de producto se suben desde el panel con una Server
+    // Action (por defecto admite 1 MB). El backend acepta hasta 10 MB.
+    serverActions: {
+      bodySizeLimit: "11mb",
+    },
+    proxyClientMaxBodySize: "11mb",
+  },
   turbopack: {
     rules: {
       "*.css": {

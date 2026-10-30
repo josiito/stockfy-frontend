@@ -19,7 +19,7 @@ export function CartView() {
         <span className="grid size-16 place-items-center rounded-full bg-accent-soft text-accent">
           <ShoppingBag className="size-7" />
         </span>
-        <p className="mt-6 font-display text-2xl font-semibold">Tu carrito está vacío</p>
+        <p className="mt-6 font-display text-2xl font-medium">Tu carrito está vacío</p>
         <p className="mt-2 text-ink-muted">Descubre nuestras piezas artesanales.</p>
         <Link href="/productos" className="btn-primary mt-8">
           Ir al catálogo <ArrowRight className="size-4" />
@@ -43,7 +43,7 @@ export function CartView() {
             <div className="flex flex-1 flex-col">
               <div className="flex items-start justify-between gap-4">
                 <div>
-                  <Link href={`/productos/${item.productSlug}`} className="font-display text-lg font-semibold hover:text-brand">
+                  <Link href={`/productos/${item.productSlug}`} className="font-display text-lg font-medium hover:text-brand">
                     {item.productName}
                   </Link>
                   {item.variantLabel && <p className="text-sm text-ink-muted">{item.variantLabel}</p>}
@@ -70,7 +70,7 @@ export function CartView() {
       </ul>
 
       <aside className="card h-fit space-y-4 p-6 lg:sticky lg:top-24">
-        <h2 className="font-display text-xl font-semibold">Resumen</h2>
+        <h2 className="font-display text-xl font-medium">Resumen</h2>
         <div className="flex justify-between text-sm">
           <span className="text-ink-muted">Subtotal</span>
           <span className="font-semibold">{formatPrice(subtotal)}</span>

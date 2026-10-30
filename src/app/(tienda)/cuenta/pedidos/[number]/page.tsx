@@ -38,7 +38,7 @@ async function OrderView({
     <div className="space-y-6">
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
-          <h1 className="font-display text-3xl font-bold">Pedido {order.number}</h1>
+          <h1 className="font-display text-3xl font-medium">Pedido {order.number}</h1>
           <p className="text-sm text-ink-muted">Realizado el {formatDate(order.created_at)}</p>
         </div>
         <OrderStatusBadge status={order.status} label={order.status_display} />
@@ -55,7 +55,7 @@ async function OrderView({
 
       <div className="grid gap-6 md:grid-cols-[1fr_300px]">
         <section className="card p-6">
-          <h2 className="mb-4 font-display text-lg font-semibold">Artículos</h2>
+          <h2 className="mb-4 font-display text-lg font-medium">Artículos</h2>
           <ul className="divide-y divide-line">
             {order.items.map((item) => (
               <li key={item.id} className="flex justify-between gap-4 py-3 text-sm">
@@ -70,12 +70,12 @@ async function OrderView({
           <dl className="mt-4 space-y-2 border-t border-line pt-4 text-sm">
             <div className="flex justify-between"><dt className="text-ink-muted">Subtotal</dt><dd>{formatPrice(order.subtotal)}</dd></div>
             <div className="flex justify-between"><dt className="text-ink-muted">Envío</dt><dd>{formatPrice(order.shipping_cost)}</dd></div>
-            <div className="flex justify-between text-base font-semibold"><dt>Total</dt><dd className="font-display text-xl">{formatPrice(order.total)}</dd></div>
+            <div className="flex justify-between text-base font-medium"><dt>Total</dt><dd className="font-display text-xl">{formatPrice(order.total)}</dd></div>
           </dl>
         </section>
 
         <section className="card h-fit space-y-2 p-6 text-sm">
-          <h2 className="mb-2 font-display text-lg font-semibold">Envío</h2>
+          <h2 className="mb-2 font-display text-lg font-medium">Envío</h2>
           <p className="font-medium">{order.shipping_name}</p>
           <p className="text-ink-muted">
             {order.shipping_address}<br />

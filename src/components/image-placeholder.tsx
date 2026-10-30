@@ -1,22 +1,20 @@
-const PALETTES = [
-  ["var(--brand-soft)", "var(--brand)", "var(--accent)"],
-  ["var(--accent-soft)", "var(--accent)", "var(--info)"],
-  ["var(--info-soft)", "var(--info)", "var(--brand)"],
-];
-
-/** Fondo geométrico para productos que aún no tienen foto. */
-export function ImagePlaceholder({ seed = 0 }: { seed?: number }) {
-  const [bg, a, b] = PALETTES[seed % PALETTES.length];
+/**
+ * Fondo neutro para productos que aún no tienen foto: textura de líneas
+ * finas, como un tejido, con el monograma de la marca.
+ */
+export function ImagePlaceholder({ seed = 0, monogram = true }: { seed?: number; monogram?: boolean }) {
+  const tones = ["var(--surface-muted)", "var(--brand-soft)", "var(--accent-soft)"];
   return (
-    <div className="absolute inset-0" style={{ background: bg }} aria-hidden>
-      <div
-        className="absolute -bottom-10 -left-6 size-40 rounded-full opacity-80"
-        style={{ background: a }}
-      />
-      <div
-        className="absolute right-8 top-8 size-16 rounded-2xl opacity-90 rotate-12"
-        style={{ background: b }}
-      />
+    <div
+      className="absolute inset-0 grid place-items-center"
+      style={{
+        backgroundColor: tones[seed % tones.length],
+        backgroundImage:
+          "repeating-linear-gradient(135deg, color-mix(in srgb, var(--ink) 5%, transparent) 0 1px, transparent 1px 10px)",
+      }}
+      aria-hidden
+    >
+      {monogram && <span className="font-display text-5xl font-semibold text-ink/15">S</span>}
     </div>
   );
 }

@@ -10,8 +10,9 @@ import {
 
 const API_URL = (process.env.API_URL ?? "http://localhost:8000").replace(/\/$/, "");
 
-// Rutas que exigen sesión iniciada.
-const PROTECTED = ["/cuenta", "/checkout"];
+// Rutas que exigen sesión iniciada. El rol de /panel se comprueba en su
+// layout (src/app/panel/layout.tsx) y, en última instancia, en el backend.
+const PROTECTED = ["/cuenta", "/checkout", "/panel"];
 
 /** Segundos que le quedan al JWT, o 0 si no se puede leer. */
 function secondsLeft(token: string | undefined) {

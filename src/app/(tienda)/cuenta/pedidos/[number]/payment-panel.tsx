@@ -63,7 +63,7 @@ export function PaymentPanel({ orderNumber, total, clearCart }: Props) {
     <section className="card overflow-hidden">
       <div className="flex flex-wrap items-center justify-between gap-4 bg-accent-soft p-6">
         <div>
-          <p className="font-display text-lg font-semibold text-accent-strong">Pendiente de pago</p>
+          <p className="font-display text-lg font-medium text-accent-strong">Pendiente de pago</p>
           <p className="text-sm text-ink-muted">Completa el pago para que empecemos a preparar tu pedido.</p>
         </div>
         {!session && (

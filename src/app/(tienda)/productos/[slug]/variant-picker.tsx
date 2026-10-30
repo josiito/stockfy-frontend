@@ -81,7 +81,7 @@ export function VariantPicker({ product, image, wishlistSlot }: Props) {
   return (
     <div className="space-y-7">
       <div className="flex items-baseline gap-3">
-        <span className="font-display text-4xl font-bold">{formatPrice(variant?.price)}</span>
+        <span className="font-display text-4xl font-medium">{formatPrice(variant?.price)}</span>
         {variant?.compare_at_price && Number(variant.compare_at_price) > Number(variant.price) && (
           <span className="text-lg text-ink-muted line-through">{formatPrice(variant.compare_at_price)}</span>
         )}
@@ -99,10 +99,10 @@ export function VariantPicker({ product, image, wishlistSlot }: Props) {
                   key={valueId}
                   type="button"
                   onClick={() => setSelection((s) => ({ ...s, [attributeId]: valueId }))}
-                  className={`rounded-full border px-4 py-2 text-sm font-medium transition ${
+                  className={`rounded-md border px-4 py-2 text-sm font-medium transition ${
                     active
-                      ? "border-brand bg-brand-fill text-white"
-                      : "border-line bg-surface hover:border-brand"
+                      ? "border-brand-fill bg-brand-fill text-white"
+                      : "border-line bg-surface hover:border-ink"
                   } ${available ? "" : "opacity-40"}`}
                 >
                   {value}
@@ -129,7 +129,7 @@ export function VariantPicker({ product, image, wishlistSlot }: Props) {
       </p>
 
       <div className="flex flex-wrap items-center gap-3">
-        <div className="flex items-center rounded-full border border-line bg-surface">
+        <div className="flex items-center rounded-md border border-line bg-surface">
           <button type="button" className="grid size-11 place-items-center" aria-label="Quitar uno" onClick={() => setQuantity((q) => Math.max(1, q - 1))}>
             <Minus className="size-4" />
           </button>
@@ -138,7 +138,7 @@ export function VariantPicker({ product, image, wishlistSlot }: Props) {
             <Plus className="size-4" />
           </button>
         </div>
-        <button type="button" onClick={handleAdd} disabled={!variant || stock < 1} className="btn-accent flex-1 py-3.5 text-base">
+        <button type="button" onClick={handleAdd} disabled={!variant || stock < 1} className="btn-primary min-w-48 flex-1 whitespace-nowrap py-3.5 text-base">
           {added ? <Check className="size-5" /> : <ShoppingBag className="size-5" />}
           {added ? "Añadido" : "Añadir al carrito"}
         </button>

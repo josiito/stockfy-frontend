@@ -11,12 +11,12 @@ export function CartButton() {
   return (
     <Link
       href="/carrito"
-      className="relative grid size-11 place-items-center rounded-full border border-line bg-surface transition hover:border-brand hover:text-brand"
+      className="relative grid size-10 place-items-center text-ink transition hover:text-brand"
       aria-label={`Carrito, ${count} artículos`}
     >
       <ShoppingBag className="size-5" />
       {count > 0 && (
-        <span className="absolute -right-1 -top-1 grid min-w-5 place-items-center rounded-full bg-accent-fill px-1.5 text-[11px] font-bold leading-5 text-white">
+        <span className="absolute -right-1 -top-1 grid min-w-5 place-items-center rounded-full bg-brand-fill px-1.5 text-[11px] font-bold leading-5 text-white">
           {count}
         </span>
       )}

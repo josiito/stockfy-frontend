@@ -1,5 +1,7 @@
 import "server-only";
 
+import { cache } from "react";
+
 import { getAccessToken } from "./session";
 import type {
   Category,
@@ -51,9 +53,13 @@ export async function api<T>(path: string, options: ApiOptions = {}): Promise<T>
     }
   }
 
+  // FormData (subida de ficheros) se envía tal cual: fetch pone el
+  // Content-Type multipart con su boundary.
+  const isForm = body instanceof FormData;
+
   const finalHeaders = new Headers(headers);
   finalHeaders.set("Accept", "application/json");
-  if (body !== undefined) finalHeaders.set("Content-Type", "application/json");
+  if (body !== undefined && !isForm) finalHeaders.set("Content-Type", "application/json");
 
   if (auth) {
     const token = await getAccessToken();
@@ -63,7 +69,7 @@ export async function api<T>(path: string, options: ApiOptions = {}): Promise<T>
   const response = await fetch(url, {
     ...init,
     headers: finalHeaders,
-    body: body !== undefined ? JSON.stringify(body) : undefined,
+    body: isForm ? body : body !== undefined ? JSON.stringify(body) : undefined,
     cache: "no-store",
   });
 
@@ -98,8 +104,12 @@ export const getCategories = () =>
 
 // --- Cuenta -----------------------------------------------------------------
 
-/** Usuario de la sesión actual, o null si no hay sesión válida. */
-export async function getCurrentUser(): Promise<User | null> {
+/**
+ * Usuario de la sesión actual, o null si no hay sesión válida.
+ * cache() evita repetir la llamada dentro de una misma petición (p. ej.
+ * el layout del panel y la página que comprueba el rol).
+ */
+export const getCurrentUser = cache(async (): Promise<User | null> => {
   if (!(await getAccessToken())) return null;
   try {
     return await api<User>("/api/users/me/", { auth: true });
@@ -107,7 +117,7 @@ export async function getCurrentUser(): Promise<User | null> {
     if (error instanceof ApiError && error.status === 401) return null;
     throw error;
   }
-}
+});
 
 export const getOrders = (page = 1) =>
   api<Paginated<Order>>("/api/orders/", { auth: true, query: { page } });

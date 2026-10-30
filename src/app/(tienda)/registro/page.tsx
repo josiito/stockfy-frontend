@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
 
-import { AuthForm } from "@/app/login/auth-form";
+import { AuthForm } from "@/app/(tienda)/login/auth-form";
 import { AuthShell } from "@/components/auth-shell";
 
 export const metadata: Metadata = { title: "Crear cuenta" };

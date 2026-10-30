@@ -12,7 +12,7 @@ export function Gallery({ images, name, seed }: { images: ProductImage[]; name: 
 
   return (
     <div className="space-y-4">
-      <div className="relative aspect-square overflow-hidden rounded-[2rem] bg-surface-muted">
+      <div className="relative aspect-square overflow-hidden rounded-lg bg-surface-muted">
         {current ? (
           <Image src={current.url} alt={current.alt_text || name} fill priority sizes="(min-width: 1024px) 50vw, 100vw" className="object-cover" />
         ) : (
@@ -27,7 +27,7 @@ export function Gallery({ images, name, seed }: { images: ProductImage[]; name: 
               type="button"
               onClick={() => setIndex(i)}
               aria-label={`Ver imagen ${i + 1}`}
-              className={`relative size-20 shrink-0 overflow-hidden rounded-2xl border-2 transition ${
+              className={`relative size-20 shrink-0 overflow-hidden rounded-md border-2 transition ${
                 i === index ? "border-brand" : "border-transparent opacity-70 hover:opacity-100"
               }`}
             >

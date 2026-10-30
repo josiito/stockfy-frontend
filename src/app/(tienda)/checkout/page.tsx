@@ -16,7 +16,7 @@ async function CheckoutWithUser() {
 export default function CheckoutPage() {
   return (
     <div className="container-page pt-12">
-      <h1 className="mb-10 font-display text-4xl font-bold tracking-tight sm:text-5xl">Finalizar pedido</h1>
+      <h1 className="mb-10 font-display text-4xl font-medium tracking-tight sm:text-5xl">Finalizar pedido</h1>
       <Suspense fallback={<div className="card h-96 animate-pulse" />}>
         <CheckoutWithUser />
       </Suspense>

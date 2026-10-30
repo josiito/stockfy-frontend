@@ -1,19 +1,51 @@
-import { ArrowRight, Hammer, PackageCheck, Truck } from "lucide-react";
+import { ArrowRight, Hammer, PackageCheck, ShieldCheck, Truck } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import { Suspense } from "react";
 
 import { ApiUnavailable } from "@/components/api-error";
+import { ImagePlaceholder } from "@/components/image-placeholder";
 import { ProductCard, ProductCardSkeleton } from "@/components/product-card";
 import { getCategories, getProducts } from "@/lib/api";
+import { formatPrice } from "@/lib/format";
 
-const CATEGORY_COLORS = [
-  "bg-brand-fill text-white",
-  "bg-accent-fill text-white",
-  "bg-info-fill text-white",
-  "bg-brand-soft text-brand-strong",
-  "bg-accent-soft text-accent-strong",
-  "bg-info-soft text-info-strong",
-];
+/** Imagen principal de la portada: el primer producto destacado con foto. */
+async function HeroImage() {
+  const featured = await getProducts({ featured: true }).catch(() => null);
+  const pool = featured?.results.length ? featured.results : ((await getProducts().catch(() => null))?.results ?? []);
+  const product = pool.find((p) => p.primary_image) ?? pool[0];
+
+  return (
+    <div className="relative aspect-[4/5] overflow-hidden rounded-lg bg-surface-muted lg:aspect-auto lg:h-full">
+      {product?.primary_image ? (
+        <Image
+          src={product.primary_image.url}
+          alt={product.primary_image.alt_text || product.name}
+          fill
+          priority
+          sizes="(min-width: 1024px) 50vw, 100vw"
+          className="object-cover"
+        />
+      ) : (
+        <ImagePlaceholder />
+      )}
+      {product && (
+        <Link
+          href={`/productos/${product.slug}`}
+          className="absolute inset-x-4 bottom-4 flex items-center justify-between gap-4 rounded-md bg-surface/95 p-4 shadow-lg backdrop-blur transition hover:bg-surface sm:inset-x-6 sm:bottom-6"
+        >
+          <span className="min-w-0">
+            <span className="block text-xs uppercase tracking-[0.14em] text-ink-muted">{product.category.name}</span>
+            <span className="block truncate font-display text-lg">{product.name}</span>
+          </span>
+          <span className="shrink-0 text-sm">
+            Desde <span className="font-semibold">{formatPrice(product.price_from)}</span>
+          </span>
+        </Link>
+      )}
+    </div>
+  );
+}
 
 async function Categories() {
   const categories = await getCategories().catch(() => null);
@@ -21,15 +53,23 @@ async function Categories() {
   if (!categories.results.length) return null;
 
   return (
-    <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-6">
+    <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
       {categories.results.slice(0, 6).map((category, index) => (
         <Link
           key={category.id}
           href={`/productos?category=${category.slug}`}
-          className={`group flex aspect-square flex-col justify-between rounded-3xl p-5 transition hover:-translate-y-1 ${CATEGORY_COLORS[index % CATEGORY_COLORS.length]}`}
+          className="group relative flex min-h-56 flex-col justify-end overflow-hidden rounded-lg border border-line p-6 transition hover:border-ink/30"
         >
-          <ArrowRight className="size-5 self-end -rotate-45 transition group-hover:rotate-0" />
-          <span className="font-display text-lg font-semibold leading-tight">{category.name}</span>
+          <ImagePlaceholder seed={index} monogram={false} />
+          <div className="relative">
+            <h3 className="font-display text-2xl">{category.name}</h3>
+            {category.description && (
+              <p className="mt-1 line-clamp-2 text-sm text-ink-muted">{category.description}</p>
+            )}
+            <span className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium">
+              Ver colección <ArrowRight className="size-4 transition group-hover:translate-x-1" />
+            </span>
+          </div>
         </Link>
       ))}
     </div>
@@ -50,7 +90,7 @@ async function FeaturedProducts() {
   }
 
   return (
-    <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+    <div className="grid grid-cols-2 gap-x-4 gap-y-10 sm:gap-x-6 lg:grid-cols-4">
       {products.slice(0, 8).map((product) => (
         <ProductCard key={product.id} product={product} />
       ))}
@@ -60,7 +100,7 @@ async function FeaturedProducts() {
 
 function GridSkeleton() {
   return (
-    <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+    <div className="grid grid-cols-2 gap-x-4 gap-y-10 sm:gap-x-6 lg:grid-cols-4">
       {Array.from({ length: 4 }, (_, i) => (
         <ProductCardSkeleton key={i} />
       ))}
@@ -69,72 +109,94 @@ function GridSkeleton() {
 }
 
 const PERKS = [
-  { icon: Hammer, title: "Hecho a mano", text: "Cada pieza sale de nuestro taller.", tone: "bg-brand-soft text-brand" },
-  { icon: PackageCheck, title: "Stock real", text: "Lo que ves disponible, lo tenemos.", tone: "bg-info-soft text-info" },
-  { icon: Truck, title: "Envío a domicilio", text: "Te lo llevamos montado o listo para montar.", tone: "bg-accent-soft text-accent" },
+  { icon: Hammer, title: "Hecho a mano", text: "Cada pieza sale de nuestro taller." },
+  { icon: PackageCheck, title: "Stock real", text: "Lo que ves disponible, lo tenemos." },
+  { icon: Truck, title: "Envío a domicilio", text: "Entrega cuidada en toda la península." },
+  { icon: ShieldCheck, title: "Pago seguro", text: "Tus datos de pago siempre protegidos." },
+];
+
+const STEPS = [
+  { title: "Materiales nobles", text: "Seleccionamos maderas, fibras y tejidos pensados para durar años, no temporadas." },
+  { title: "Fabricación artesanal", text: "Cada pieza se monta y se termina a mano en nuestro taller, con controles en cada paso." },
+  { title: "Entrega en tu casa", text: "Te avisamos en cada fase del pedido y lo recibes listo para disfrutar." },
 ];
 
 export default function HomePage() {
   return (
     <>
-      <section className="container-page pt-10 lg:pt-16">
-        <div className="relative overflow-hidden rounded-[2.5rem] bg-brand-fill px-6 py-16 text-white sm:px-12 lg:px-16 lg:py-24">
-          <div className="absolute -right-24 -top-24 size-96 rounded-full bg-accent-fill/90" aria-hidden />
-          <div className="absolute -bottom-32 right-40 size-80 rounded-full bg-info-fill/80" aria-hidden />
-          <div className="absolute bottom-10 right-16 hidden size-28 rotate-12 rounded-3xl border-4 border-white/70 lg:block" aria-hidden />
-
-          <div className="relative max-w-2xl">
-            <span className="inline-flex items-center gap-2 rounded-full bg-white/15 px-4 py-1.5 text-sm font-medium backdrop-blur">
-              <span className="size-2 rounded-full bg-accent-fill" /> Nueva colección de cabeceros
-            </span>
-            <h1 className="mt-6 font-display text-5xl font-extrabold leading-[1.02] tracking-tight sm:text-6xl lg:text-7xl">
-              Artesanía hecha para descansar mejor.
-            </h1>
-            <p className="mt-6 max-w-lg text-lg text-white/85">
-              Cabeceros, somieres y piezas únicas fabricadas en nuestro taller, a tu medida y con
-              stock en tiempo real.
-            </p>
-            <div className="mt-10 flex flex-wrap gap-3">
-              <Link href="/productos" className="btn-accent px-7 py-3.5 text-base">
-                Ver catálogo <ArrowRight className="size-4" />
-              </Link>
-              <Link
-                href="/productos?featured=true"
-                className="btn border border-white/40 px-7 py-3.5 text-base text-white hover:bg-white/10"
-              >
-                Destacados
-              </Link>
-            </div>
+      <section className="container-page grid gap-10 pt-8 lg:min-h-[640px] lg:grid-cols-2 lg:gap-16 lg:pt-12">
+        <div className="flex flex-col justify-center py-4 lg:py-16">
+          <p className="eyebrow">Artesanía para el dormitorio</p>
+          <h1 className="mt-5 font-display text-5xl leading-[1.05] tracking-tight sm:text-6xl xl:text-7xl">
+            Piezas hechas a mano para descansar mejor.
+          </h1>
+          <p className="mt-6 max-w-lg text-lg leading-relaxed text-ink-muted">
+            Cabeceros, somieres y artesanía fabricados en nuestro taller con materiales nobles,
+            stock en tiempo real y envío a domicilio.
+          </p>
+          <div className="mt-10 flex flex-wrap gap-3">
+            <Link href="/productos" className="btn-primary px-7 py-3.5 text-base">
+              Ver catálogo <ArrowRight className="size-4" />
+            </Link>
+            <Link href="/productos?ordering=-created_at" className="btn-ghost px-7 py-3.5 text-base">
+              Novedades
+            </Link>
           </div>
         </div>
+        <Suspense fallback={<div className="aspect-[4/5] animate-pulse rounded-lg bg-surface-muted lg:aspect-auto" />}>
+          <HeroImage />
+        </Suspense>
       </section>
 
-      <section className="container-page mt-10 grid gap-4 md:grid-cols-3">
-        {PERKS.map(({ icon: Icon, title, text, tone }) => (
-          <div key={title} className="card flex items-center gap-4 p-5">
-            <span className={`grid size-12 shrink-0 place-items-center rounded-2xl ${tone}`}>
-              <Icon className="size-6" />
-            </span>
-            <div>
-              <p className="font-semibold">{title}</p>
-              <p className="text-sm text-ink-muted">{text}</p>
-            </div>
-          </div>
-        ))}
+      <section className="mt-16 border-y border-line bg-surface">
+        <ul className="container-page grid grid-cols-2 gap-x-6 gap-y-8 py-10 lg:grid-cols-4">
+          {PERKS.map(({ icon: Icon, title, text }) => (
+            <li key={title} className="flex gap-4">
+              <Icon className="mt-0.5 size-6 shrink-0 text-accent" strokeWidth={1.5} />
+              <div>
+                <p className="font-medium">{title}</p>
+                <p className="mt-0.5 text-sm text-ink-muted">{text}</p>
+              </div>
+            </li>
+          ))}
+        </ul>
       </section>
 
-      <section className="container-page mt-20">
-        <SectionTitle eyebrow="Explora" title="Categorías" href="/productos" />
-        <Suspense fallback={<div className="h-40 animate-pulse rounded-3xl bg-surface-muted" />}>
+      <section className="container-page mt-24">
+        <SectionTitle eyebrow="Colecciones" title="Encuentra tu pieza" href="/productos" />
+        <Suspense fallback={<div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">{[0, 1, 2].map((i) => <div key={i} className="h-56 animate-pulse rounded-lg bg-surface-muted" />)}</div>}>
           <Categories />
         </Suspense>
       </section>
 
-      <section className="container-page mt-20">
+      <section className="container-page mt-24">
         <SectionTitle eyebrow="Selección" title="Productos destacados" href="/productos?featured=true" />
         <Suspense fallback={<GridSkeleton />}>
           <FeaturedProducts />
         </Suspense>
+      </section>
+
+      <section className="mt-28 -mb-24 bg-surface-muted">
+        <div className="container-page grid gap-12 py-20 lg:grid-cols-[1fr_2fr] lg:gap-20">
+          <div>
+            <p className="eyebrow">Nuestro taller</p>
+            <h2 className="mt-4 font-display text-4xl leading-tight tracking-tight">
+              Del taller a tu casa, sin intermediarios.
+            </h2>
+            <Link href="/productos" className="mt-8 inline-flex items-center gap-1.5 font-medium text-brand hover:underline">
+              Descubre el catálogo <ArrowRight className="size-4" />
+            </Link>
+          </div>
+          <ol className="grid gap-10 sm:grid-cols-3">
+            {STEPS.map((step, index) => (
+              <li key={step.title} className="border-t border-ink/15 pt-6">
+                <span className="font-display text-4xl text-accent">0{index + 1}</span>
+                <h3 className="mt-4 text-lg font-medium">{step.title}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-ink-muted">{step.text}</p>
+              </li>
+            ))}
+          </ol>
+        </div>
       </section>
     </>
   );
@@ -142,12 +204,12 @@ export default function HomePage() {
 
 function SectionTitle({ eyebrow, title, href }: { eyebrow: string; title: string; href: string }) {
   return (
-    <div className="mb-8 flex items-end justify-between gap-4">
+    <div className="mb-10 flex items-end justify-between gap-4">
       <div>
-        <p className="text-sm font-semibold uppercase tracking-wider text-accent">{eyebrow}</p>
-        <h2 className="mt-1 font-display text-3xl font-bold tracking-tight sm:text-4xl">{title}</h2>
+        <p className="eyebrow">{eyebrow}</p>
+        <h2 className="mt-3 font-display text-3xl tracking-tight sm:text-4xl">{title}</h2>
       </div>
-      <Link href={href} className="hidden items-center gap-1.5 text-sm font-semibold text-brand hover:underline sm:flex">
+      <Link href={href} className="hidden items-center gap-1.5 text-sm font-medium hover:text-brand sm:flex">
         Ver todo <ArrowRight className="size-4" />
       </Link>
     </div>
