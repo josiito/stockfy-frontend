@@ -14,6 +14,12 @@ pnpm dev                        # http://localhost:3000
 
 El backend tiene que estar arrancado (`python manage.py runserver` en `stockfy`).
 
+## Docker
+
+El `Dockerfile` genera una imagen con el servidor `standalone` de Next (Node 24, sin `node_modules` completos). La variable `API_URL` se lee al arrancar el contenedor, no al construir la imagen, así que la misma imagen vale para cualquier entorno.
+
+El despliegue completo (PostgreSQL, backend, esta tienda y Caddy con HTTPS) está en el `docker-compose.yml` del repositorio `stockfy`. Allí se explica cómo arrancarlo.
+
 ## Cómo habla con el backend
 
 - El navegador **nunca** llama a la API directamente: lo hace el servidor de Next (`src/lib/api.ts`), así que no hace falta CORS.
