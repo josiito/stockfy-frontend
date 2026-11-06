@@ -26,12 +26,8 @@ export async function placeOrder(_: FormState, formData: FormData): Promise<Form
       auth: true,
       body: {
         items,
+        // Recogida en el taller: solo datos de contacto.
         shipping_name: field("shipping_name"),
-        shipping_address: field("shipping_address"),
-        shipping_city: field("shipping_city"),
-        shipping_postal_code: field("shipping_postal_code"),
-        shipping_province: field("shipping_province"),
-        shipping_country: field("shipping_country") || "ES",
         shipping_phone: field("shipping_phone"),
         notes: field("notes"),
       },

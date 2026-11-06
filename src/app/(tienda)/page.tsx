@@ -1,4 +1,4 @@
-import { ArrowRight, Hammer, PackageCheck, ShieldCheck, Truck } from "lucide-react";
+import { ArrowRight, Hammer, PackageCheck, ShieldCheck } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { Suspense } from "react";
@@ -111,14 +111,13 @@ function GridSkeleton() {
 const PERKS = [
   { icon: Hammer, title: "Hecho a mano", text: "Cada pieza sale de nuestro taller." },
   { icon: PackageCheck, title: "Stock real", text: "Lo que ves disponible, lo tenemos." },
-  { icon: Truck, title: "Envío a domicilio", text: "Entrega cuidada en toda la península." },
   { icon: ShieldCheck, title: "Pago seguro", text: "Tus datos de pago siempre protegidos." },
 ];
 
 const STEPS = [
   { title: "Materiales nobles", text: "Seleccionamos maderas, fibras y tejidos pensados para durar años, no temporadas." },
   { title: "Fabricación artesanal", text: "Cada pieza se monta y se termina a mano en nuestro taller, con controles en cada paso." },
-  { title: "Entrega en tu casa", text: "Te avisamos en cada fase del pedido y lo recibes listo para disfrutar." },
+  { title: "Seguimiento del pedido", text: "Te avisamos en cada fase, desde que confirmas el pedido hasta que está listo." },
 ];
 
 export default function HomePage() {
@@ -131,8 +130,8 @@ export default function HomePage() {
             Piezas hechas a mano para descansar mejor.
           </h1>
           <p className="mt-6 max-w-lg text-lg leading-relaxed text-ink-muted">
-            Cabeceros, somieres y artesanía fabricados en nuestro taller con materiales nobles,
-            stock en tiempo real y envío a domicilio.
+            Cabeceros, somieres y artesanía fabricados en nuestro taller con materiales nobles
+            y stock en tiempo real.
           </p>
           <div className="mt-10 flex flex-wrap gap-3">
             <Link href="/productos" className="btn-primary px-7 py-3.5 text-base">
@@ -149,7 +148,7 @@ export default function HomePage() {
       </section>
 
       <section className="mt-16 border-y border-line bg-surface">
-        <ul className="container-page grid grid-cols-2 gap-x-6 gap-y-8 py-10 lg:grid-cols-4">
+        <ul className="container-page grid gap-x-6 gap-y-8 py-10 sm:grid-cols-3">
           {PERKS.map(({ icon: Icon, title, text }) => (
             <li key={title} className="flex gap-4">
               <Icon className="mt-0.5 size-6 shrink-0 text-accent" strokeWidth={1.5} />
@@ -181,7 +180,7 @@ export default function HomePage() {
           <div>
             <p className="eyebrow">Nuestro taller</p>
             <h2 className="mt-4 font-display text-4xl leading-tight tracking-tight">
-              Del taller a tu casa, sin intermediarios.
+              Directo del taller, sin intermediarios.
             </h2>
             <Link href="/productos" className="mt-8 inline-flex items-center gap-1.5 font-medium text-brand hover:underline">
               Descubre el catálogo <ArrowRight className="size-4" />

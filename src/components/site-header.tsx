@@ -63,8 +63,8 @@ export function SiteHeader() {
   return (
     <header className="sticky top-0 z-40">
       <p className="bg-brand-fill px-4 py-2 text-center text-xs tracking-wide text-white/85">
-        Fabricado en nuestro taller · Envío a toda la península
-        <span className="hidden sm:inline"> · Pago seguro</span>
+        Fabricado a mano en nuestro taller
+        <span className="hidden sm:inline"> · Stock real · Pago seguro</span>
       </p>
       <div className="relative border-b border-line bg-background/90 backdrop-blur-xl">
         <div className="container-page flex h-16 items-center justify-between gap-6 lg:h-18">

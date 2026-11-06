@@ -69,20 +69,21 @@ async function OrderView({
           </ul>
           <dl className="mt-4 space-y-2 border-t border-line pt-4 text-sm">
             <div className="flex justify-between"><dt className="text-ink-muted">Subtotal</dt><dd>{formatPrice(order.subtotal)}</dd></div>
-            <div className="flex justify-between"><dt className="text-ink-muted">Envío</dt><dd>{formatPrice(order.shipping_cost)}</dd></div>
             <div className="flex justify-between text-base font-medium"><dt>Total</dt><dd className="font-display text-xl">{formatPrice(order.total)}</dd></div>
           </dl>
         </section>
 
         <section className="card h-fit space-y-2 p-6 text-sm">
-          <h2 className="mb-2 font-display text-lg font-medium">Envío</h2>
+          <h2 className="mb-2 font-display text-lg font-medium">Recogida en el taller</h2>
           <p className="font-medium">{order.shipping_name}</p>
-          <p className="text-ink-muted">
-            {order.shipping_address}<br />
-            {order.shipping_postal_code} {order.shipping_city}
-            {order.shipping_province && `, ${order.shipping_province}`}
-          </p>
           {order.shipping_phone && <p className="text-ink-muted">{order.shipping_phone}</p>}
+          <p className="pt-2 text-ink-muted">
+            {order.status === "SHIPPED"
+              ? "Tu pedido está listo. Puedes pasar a recogerlo."
+              : order.status === "DELIVERED"
+                ? "Pedido recogido. ¡Gracias por tu compra!"
+                : "Te avisaremos cuando esté listo para recoger."}
+          </p>
           {pending && (
             <form action={cancelOrder.bind(null, order.number)} className="pt-4">
               <button className="text-sm font-medium text-danger hover:underline">Cancelar pedido</button>

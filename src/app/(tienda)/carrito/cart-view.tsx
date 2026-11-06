@@ -75,10 +75,7 @@ export function CartView() {
           <span className="text-ink-muted">Subtotal</span>
           <span className="font-semibold">{formatPrice(subtotal)}</span>
         </div>
-        <div className="flex justify-between text-sm">
-          <span className="text-ink-muted">Envío</span>
-          <span className="text-ink-muted">Se calcula al pedir</span>
-        </div>
+        <p className="text-sm text-ink-muted">Recogida en nuestro taller, sin coste adicional.</p>
         <Link href="/checkout" className="btn-accent w-full py-3.5 text-base">
           Tramitar pedido <ArrowRight className="size-4" />
         </Link>

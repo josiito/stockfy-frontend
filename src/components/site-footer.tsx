@@ -1,4 +1,4 @@
-import { Hammer, ShieldCheck, Truck } from "lucide-react";
+import { Hammer, PackageCheck, ShieldCheck } from "lucide-react";
 import Link from "next/link";
 
 import { Logo } from "./logo";
@@ -26,7 +26,7 @@ const COLUMNS = [
 
 const PROMISES = [
   { icon: Hammer, text: "Fabricación artesanal propia" },
-  { icon: Truck, text: "Envío a toda la península" },
+  { icon: PackageCheck, text: "Stock real en cada pieza" },
   { icon: ShieldCheck, text: "Pago 100 % seguro" },
 ];
 

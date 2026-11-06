@@ -1,4 +1,4 @@
-import { Hammer, ShieldCheck, Truck } from "lucide-react";
+import { Hammer, PackageCheck, ShieldCheck } from "lucide-react";
 
 /** Marco de dos columnas para login y registro. */
 export function AuthShell({ title, subtitle, children }: { title: string; subtitle: string; children: React.ReactNode }) {
@@ -18,7 +18,7 @@ export function AuthShell({ title, subtitle, children }: { title: string; subtit
           </p>
           <ul className="mt-10 space-y-3 text-sm text-white/75">
             <li className="flex items-center gap-3"><Hammer className="size-4" strokeWidth={1.5} /> Fabricación artesanal propia</li>
-            <li className="flex items-center gap-3"><Truck className="size-4" strokeWidth={1.5} /> Envío a toda la península</li>
+            <li className="flex items-center gap-3"><PackageCheck className="size-4" strokeWidth={1.5} /> Stock real en cada pieza</li>
             <li className="flex items-center gap-3"><ShieldCheck className="size-4" strokeWidth={1.5} /> Pago 100 % seguro</li>
           </ul>
         </div>

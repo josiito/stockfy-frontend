@@ -22,7 +22,7 @@ export const metadata: Metadata = {
     default: "Stockfy · Artesanía para tu descanso",
     template: "%s · Stockfy",
   },
-  description: "Cabeceros, somieres y artesanía hechos a mano, con stock real y envío a domicilio.",
+  description: "Cabeceros, somieres y artesanía hechos a mano en nuestro taller, con stock real.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

@@ -1,6 +1,6 @@
 "use client";
 
-import { Lock } from "lucide-react";
+import { Lock, Store } from "lucide-react";
 import Link from "next/link";
 import { useActionState } from "react";
 
@@ -33,16 +33,15 @@ export function CheckoutForm({ defaults }: Props) {
       <input type="hidden" name="items" value={payload} />
 
       <section className="card space-y-5 p-6 sm:p-8">
-        <h2 className="font-display text-xl font-medium">Datos de envío</h2>
-        <Field name="shipping_name" label="Nombre completo" defaultValue={defaults.name} required autoComplete="name" />
-        <Field name="shipping_address" label="Dirección" required autoComplete="street-address" />
+        <h2 className="font-display text-xl font-medium">Datos de contacto</h2>
+        <p className="flex gap-3 rounded-md bg-brand-soft p-4 text-sm text-brand-strong">
+          <Store className="mt-0.5 size-4 shrink-0" />
+          Recogerás tu pedido en nuestro taller. Te avisaremos en cuanto esté listo para recoger.
+        </p>
         <div className="grid gap-5 sm:grid-cols-2">
-          <Field name="shipping_city" label="Ciudad" required autoComplete="address-level2" />
-          <Field name="shipping_postal_code" label="Código postal" required autoComplete="postal-code" />
-          <Field name="shipping_province" label="Provincia" autoComplete="address-level1" />
-          <Field name="shipping_phone" label="Teléfono" defaultValue={defaults.phone} type="tel" autoComplete="tel" />
+          <Field name="shipping_name" label="Nombre completo" defaultValue={defaults.name} required autoComplete="name" />
+          <Field name="shipping_phone" label="Teléfono" defaultValue={defaults.phone} type="tel" required autoComplete="tel" />
         </div>
-        <input type="hidden" name="shipping_country" value="ES" />
         <div>
           <label className="label" htmlFor="notes">Notas para el pedido (opcional)</label>
           <textarea id="notes" name="notes" rows={3} className="input" />
@@ -63,10 +62,10 @@ export function CheckoutForm({ defaults }: Props) {
           ))}
         </ul>
         <div className="flex justify-between border-t border-line pt-4">
-          <span className="font-semibold">Subtotal</span>
+          <span className="font-semibold">Total</span>
           <span className="font-display text-xl font-medium">{formatPrice(subtotal)}</span>
         </div>
-        <p className="text-xs text-ink-muted">Los gastos de envío se añaden al confirmar el pedido.</p>
+        <p className="text-xs text-ink-muted">Recogida en el taller, sin coste adicional.</p>
         <FormError message={state?.error} />
         <button className="btn-accent w-full py-3.5 text-base" disabled={pending}>
           <Lock className="size-4" /> {pending ? "Creando pedido…" : "Confirmar y pagar"}
